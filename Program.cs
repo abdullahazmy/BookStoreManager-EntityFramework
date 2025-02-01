@@ -9,9 +9,12 @@ namespace BookStoreManager
             Console.WriteLine("-----------------------------");
             Console.WriteLine("Welcome to the BookStoreManagementSystem");
 
+
             using (var context = new AppDbContext())
             {
+                SeedData(context);
                 context.Database.EnsureCreated();
+
 
                 while (true)
                 {

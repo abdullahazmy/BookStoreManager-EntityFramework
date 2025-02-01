@@ -8,5 +8,9 @@
         public string Author { get; set; } // make it required
         public decimal Price { get; set; }
         public DateTime PublishDate { get; set; }
+
+        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+
     }
 }

@@ -9,8 +9,7 @@ namespace BookStoreManager
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
             optionsBuilder.UseSqlServer(Connection);
 
-
-        public void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Book>(entity =>
             {
@@ -19,8 +18,24 @@ namespace BookStoreManager
                 entity.Property(e => e.PublishDate).HasDefaultValueSql("GETDATE()");
             });
 
+
+
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.Category)
+                .WithMany(c => c.Books)
+                .HasForeignKey(b => b.CategoryId);
+
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.Property(e => e.Name)
+                      .IsRequired()
+                      .HasMaxLength(150);
+            });
+
         }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
     }
 }

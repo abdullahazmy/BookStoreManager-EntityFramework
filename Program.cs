@@ -59,6 +59,10 @@ namespace BookStoreManager
             Console.Write("Enter publish date (yyyy-MM-dd): ");
             DateTime publishDate = DateTime.Parse(Console.ReadLine());
 
+            Console.Write("Enter Category Name: ");
+            string _CategoryName = Console.ReadLine();
+            Category category = new Category { Name = _CategoryName };
+
             var book = new Book { Title = title, Author = author, Price = price, PublishDate = publishDate };
             context.Books.Add(book);
             context.SaveChanges();
@@ -71,7 +75,7 @@ namespace BookStoreManager
             Console.WriteLine("\nBooks in Store:");
             foreach (var book in books)
             {
-                Console.WriteLine($"ID: {book.Id}, Title: {book.Title}, Author: {book.Author}, Price: {book.Price}, Published: {book.PublishDate.ToShortDateString()}");
+                Console.WriteLine($"ID: {book.Id}, Title: {book.Title}, Author: {book.Author}, Price: {book.Price}, Category: {book.Category.Name} ,Published: {book.PublishDate.ToShortDateString()}");
             }
         }
 
@@ -127,6 +131,23 @@ namespace BookStoreManager
             {
                 Console.WriteLine("Invalid ID.");
             }
+        }
+
+        static void SeedData(AppDbContext context)
+        {
+            if (context.Books.Any())
+                return;
+
+            var books = new List<Book>
+            {
+                new Book { Title = "The Great Gatsby", Author = "F. Scott Fitzgerald", Price = 9.99m, PublishDate = new DateTime(1925, 4, 10) },
+                new Book { Title = "To Kill a Mockingbird", Author = "Harper Lee", Price = 7.99m, PublishDate = new DateTime(1960, 7, 11) },
+                new Book { Title = "1984", Author = "George Orwell", Price = 8.99m, PublishDate = new DateTime(1949, 6, 8) },
+                new Book { Title = "Pride and Prejudice", Author = "Jane Austen", Price = 6.99m, PublishDate = new DateTime(1813, 1, 28) },
+                new Book { Title = "The Catcher in the Rye", Author = "J.D. Salinger", Price = 5.99m, PublishDate = new DateTime(1951, 7, 16) }
+            };
+            context.Books.AddRange(books);
+            context.SaveChanges();
         }
     }
 }
